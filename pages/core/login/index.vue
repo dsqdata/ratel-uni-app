@@ -1,44 +1,46 @@
 <template>
 	<view class="content">
-		<view class="login-type">
-			<view v-for="(item,index) in loginTypeList" :key="index" @click="loginType = index" :class="{act: loginType === index}"
-			 class="login-type-btn">{{item}}</view>
+		<view class="img-view">
+			<image src="../../../static/img/bg.png"></image>
 		</view>
-		<view class="input-group" v-if="loginType === 0">
-			<view class="input-row border">
-				<text class="title">账号：</text>
-				<ra-input class="ra-input" type="text" clearable focus v-model="username" placeholder="请输入账号"></ra-input>
+
+		<view class="content-body">
+			<view class="login-type">
+				<view v-for="(item,index) in loginTypeList" :key="index" @click="loginType = index" :class="{act: loginType === index}"
+				 class="login-type-btn">{{item}}</view>
 			</view>
-			<view class="input-row">
-				<text class="title">密码：</text>
-				<ra-input type="password" displayable v-model="password" placeholder="请输入密码"></ra-input>
+			<view class="" v-if="loginType === 0">
+				<view class="ratel-input-row ratel-border-bottom">
+					<ra-input class="ra-input" type="text" clearable focus v-model="username" placeholder="请输入账号"></ra-input>
+				</view>
+				<view class="ratel-input-row ratel-border-bottom">
+					<ra-input type="password" displayable v-model="password" placeholder="请输入密码"></ra-input>
+				</view>
 			</view>
-		</view>
-		<view class="input-group" v-else>
-			<view class="input-row border">
-				<text class="title">手机：</text>
-				<ra-input class="ra-input" type="text" clearable focus v-model="mobile" placeholder="请输入手机号码"></ra-input>
+			<view class="" v-else>
+				<view class="ratel-input-row ratel-border-bottom">
+					<ra-input class="ra-input" type="text" clearable focus v-model="mobile" placeholder="请输入手机号码"></ra-input>
+				</view>
+				<view class="ratel-input-row ratel-border-bottom">
+					<ra-input type="text" v-model="code" placeholder="请输入验证码"></ra-input>
+					<view class="send-code-btn" @click="sendSmsCode">{{codeDuration ? codeDuration + 's' : '发送验证码' }}</view>
+				</view>
 			</view>
-			<view class="input-row">
-				<text class="title">验证码：</text>
-				<ra-input type="text" v-model="code" placeholder="请输入验证码"></ra-input>
-				<view class="send-code-btn" @click="sendSmsCode">{{codeDuration ? codeDuration + 's' : '发送验证码' }}</view>
+			<view class="ratel-btn-row">
+				<button type="primary" class="primary ratel-button" @tap="bindLogin">登录</button>
 			</view>
-		</view>
-		<view class="btn-row">
-			<button type="primary" class="primary" @tap="bindLogin">登录</button>
-		</view>
-		<view class="action-row">
-			<navigator url="../reg/reg">注册账号</navigator>
-			<!-- <text>|</text>
-			<navigator url="../pwd/pwd">忘记密码</navigator> -->
-		</view>
-		<view class="oauth-row" v-if="hasProvider" v-bind:style="{top: positionTop + 'px'}">
-			<view class="oauth-image" v-for="provider in providerList" :key="provider.value">
-				<image :src="provider.image" @tap="oauth(provider.value)"></image>
-				<!-- #ifdef MP-WEIXIN -->
-				<button v-if="!isDevtools" open-type="getUserInfo" @getuserinfo="getUserInfo"></button>
-				<!-- #endif -->
+			<view class="ratel-action-row">
+				<navigator url="../reg/reg">注册账号</navigator>
+				<text style="padding: 0 10rpx;">|</text> 
+				<navigator url="../pwd/pwd">忘记密码</navigator>
+			</view>
+			<view class="oauth-row" v-if="hasProvider" v-bind:style="{top: positionTop + 'px'}">
+				<view class="oauth-image" v-for="provider in providerList" :key="provider.value">
+					<image :src="provider.image" @tap="oauth(provider.value)"></image>
+					<!-- #ifdef MP-WEIXIN -->
+					<button v-if="!isDevtools" open-type="getUserInfo" @getuserinfo="getUserInfo"></button>
+					<!-- #endif -->
+				</view>
 			</view>
 		</view>
 	</view>
@@ -54,10 +56,12 @@
 		mapMutations
 	} from 'vuex'
 	import raInput from '../../../components/ra-input/ra-input.vue'
+	import raIcon from '../../../components/ra-icon/ra-icon.vue'
 
 	export default {
 		components: {
-			raInput
+			raInput,
+			raIcon
 		},
 		data() {
 			return {
@@ -199,7 +203,7 @@
 					fail: res => {
 						console.log(res)
 						uni.showModal({
-							content: !!res.data.message? res.data.message :'系统错误，请联系管理员！',
+							content: !!res.data.message ? res.data.message : '系统错误，请联系管理员！',
 							showCancel: false
 						})
 					},
@@ -345,6 +349,59 @@
 </script>
 
 <style>
+	.pages-core-login-index .content {
+		background-color: #FFFFFF;
+	}
+
+	.content-body {
+		padding: 24px;
+	}
+
+	image,
+	.img-view {
+		width: 750rpx;
+		height: 600rpx;
+	}
+
+	.ratel-input-row {
+		margin-top: 10px;
+		padding: 10px 10px 5px 10px;
+		display: flex;
+		flex-direction: row;
+		position: relative;
+		font-size: 18px;
+		line-height: 40px;
+	}
+
+	.ratel-input-row .title {
+		width: 100px;
+		padding-left: 15px;
+	}
+
+	.ratel-border-bottom {
+		border-bottom: 1px solid #cacaca;
+	}
+
+	.ratel-btn-row {
+		margin-top: 40px;
+	}
+	
+	.ratel-action-row{
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		margin-top: 20rpx;
+		font-size: 20rpx;
+		color: #555555;
+	}
+
+	.ratel-button {
+		background-color: #57ade8;
+		border-radius:50rpx;
+		line-height: 2.3;
+	}
+
+
 	.login-type {
 		display: flex;
 		justify-content: center;
@@ -361,16 +418,17 @@
 	}
 
 	.send-code-btn {
-		width: 120px;
+		line-height: 24px;
+		font-size: 14px;
+		width: 95px;
 		text-align: center;
 		background-color: #0FAEFF;
+		border-radius: 20px;
 		color: #FFFFFF;
 	}
 
 	.action-row {
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
+		
 	}
 
 	.action-row navigator {
@@ -411,5 +469,13 @@
 		width: 100%;
 		height: 100%;
 		opacity: 0;
+	}
+
+	.input-group {
+		background-color: initial;
+	}
+
+	.input-row.border::after {
+		background-color: #FFFFFF;
 	}
 </style>

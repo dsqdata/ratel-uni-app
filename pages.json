@@ -1,7 +1,13 @@
 {
-	"pages": [{
-		"path": "pages/core/login/index",
+	"pages": [ {
+		"path": "pages/core/home/index",
 		"style": {}
+	},
+		{
+		"path": "pages/core/login/index",
+		"style": {
+			"navigationStyle":"custom"
+		}
 	}, {
 		"path": "pages/demo/request-page/request-page",
 		"style": {}
@@ -10,10 +16,11 @@
 		"style": {
 			"navigationBarTitleText": "示例列表"
 		}
-	}, {
-		"path": "pages/core/home/index",
-		"style": {}
-	}],
+	}    ,{
+            "path" : "pages/core/my/index",
+            "style" : {"navigationBarTitleText": "我的"}
+        }
+    ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
 		"navigationBarTitleText": "ratel-uni-app",
