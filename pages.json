@@ -1,0 +1,23 @@
+{
+	"pages": [{
+		"path": "pages/core/login/index",
+		"style": {}
+	}, {
+		"path": "pages/demo/request-page/request-page",
+		"style": {}
+	}, {
+		"path": "pages/demo/index/index",
+		"style": {
+			"navigationBarTitleText": "示例列表"
+		}
+	}, {
+		"path": "pages/core/home/index",
+		"style": {}
+	}],
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "ratel-uni-app",
+		"navigationBarBackgroundColor": "#007AFF",
+		"backgroundColor": "#FFFFFF"
+	}
+}
