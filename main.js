@@ -20,11 +20,12 @@ request.setConfig({
 request.interceptor.request = (config => {
 	// 给data添加全局请求参数uid
 	if (!config.data.uid) {
-		config.data.uid = 100
+		config.data.uid = new Date().getTime()
 	}
 	// 给header添加全局请求参数token
-	if (!config.header.token) {
-		config.header.token = 'my_token'
+	if (!config.header.Authorization) {
+		let token = uni.getStorageInfoSync("ratelUser").token
+		config.header.Authorization = !token?'':token
 	}
 	// 添加一个自定义的参数，默认异常请求都弹出一个toast提示
 	if (config.toastError === undefined) {
