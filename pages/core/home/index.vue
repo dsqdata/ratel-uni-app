@@ -24,13 +24,13 @@
 		methods: {
 			guideToLogin() {
 				uni.reLaunch({
-					url: '../login/index',
+					url: '../login/index'
 				});
 			},
 			outLogin() {
 				uni.removeStorageSync("ratelUser")
 				uni.reLaunch({
-					url: './index',
+					url: './index'
 				});
 			},
 			myInfo(){

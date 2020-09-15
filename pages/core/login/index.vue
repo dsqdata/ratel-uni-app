@@ -95,7 +95,7 @@
 									});
 								}
 							}
-							this.hasProvider = true;
+							// this.hasProvider = true;
 						}
 					},
 					fail: (err) => {

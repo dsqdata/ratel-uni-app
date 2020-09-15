@@ -99,11 +99,14 @@
 </script>
 
 <style>
+	ra-input{
+		width: 100%;
+	}
 	.ra-input-view {
 		display: inline-flex;
 		flex-direction: row;
 		align-items: center;
-		/* width: 100%; */
+		width: 100%;
 		flex: 1;
 		padding: 0 10px;
 	}
