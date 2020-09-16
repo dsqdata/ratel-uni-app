@@ -1,11 +1,47 @@
 <template>
-	<view class="ra-content">
-		<view class="ra-img-view">
-			<image src="../../../static/img/dlbj.jpg"></image>
+	<view class="content">
+		<view class="img-view">
+			<image src="../../../static/img/bg.png"></image>
 		</view>
-		<view class="ra-container">
-			<ra-input type="text" clearable focus v-model="username" title="账号" placeholder="请输入账号"></ra-input>
-			<ra-input type="password" displayable v-model="password" title="密码" placeholder="请输入密码"></ra-input>
+
+		<view class="content-body">
+			<view class="login-type">
+				<view v-for="(item,index) in loginTypeList" :key="index" @click="loginType = index" :class="{act: loginType === index}"
+				 class="login-type-btn">{{item}}</view>
+			</view>
+			<view class="" v-if="loginType === 0">
+				<view class="ratel-input-row ratel-border-bottom">
+					<ra-input class="ra-input" type="text" clearable focus v-model="username" placeholder="请输入账号"></ra-input>
+				</view>
+				<view class="ratel-input-row ratel-border-bottom">
+					<ra-input type="password" displayable v-model="password" placeholder="请输入密码"></ra-input>
+				</view>
+			</view>
+			<view class="" v-else>
+				<view class="ratel-input-row ratel-border-bottom">
+					<ra-input class="ra-input" type="text" clearable focus v-model="mobile" placeholder="请输入手机号码"></ra-input>
+				</view>
+				<view class="ratel-input-row ratel-border-bottom">
+					<ra-input type="text" v-model="code" placeholder="请输入验证码"></ra-input>
+					<view class="send-code-btn" @click="sendSmsCode">{{codeDuration ? codeDuration + 's' : '发送验证码' }}</view>
+				</view>
+			</view>
+			<view class="ratel-btn-row">
+				<button type="primary" class="primary ratel-button" @tap="bindLogin">登录</button>
+			</view>
+			<view class="ratel-action-row">
+				<navigator url="../reg/reg">注册账号</navigator>
+				<text style="padding: 0 10rpx;">|</text> 
+				<navigator url="../pwd/pwd">忘记密码</navigator>
+			</view>
+			<view class="oauth-row" v-if="hasProvider" v-bind:style="{top: positionTop + 'px'}">
+				<view class="oauth-image" v-for="provider in providerList" :key="provider.value">
+					<image :src="provider.image" @tap="oauth(provider.value)"></image>
+					<!-- #ifdef MP-WEIXIN -->
+					<button v-if="!isDevtools" open-type="getUserInfo" @getuserinfo="getUserInfo"></button>
+					<!-- #endif -->
+				</view>
+			</view>
 		</view>
 	</view>
 </template>
@@ -313,23 +349,133 @@
 </script>
 
 <style>
-	.ra-content {
-		display: flex;
-		flex: 1;
-		flex-direction: column;
+	.pages-core-login-index .content {
 		background-color: #FFFFFF;
 	}
 
-	.ra-container {
-		-webkit-box-flex: 1;
-		-ms-flex: 1 1 auto;
-		flex: 1 1 auto;
-		padding: 1.5rem;
+	.content-body {
+		padding: 24px;
 	}
-	
+
 	image,
-	.ra-img-view {
+	.img-view {
 		width: 750rpx;
 		height: 600rpx;
+	}
+
+	.ratel-input-row {
+		margin-top: 10px;
+		padding: 10px 10px 5px 10px;
+		display: flex;
+		flex-direction: row;
+		position: relative;
+		    font-size: 14px;
+		    line-height: 14px;
+	}
+
+	.ratel-input-row .title {
+		width: 100px;
+		padding-left: 15px;
+	}
+
+	.ratel-border-bottom {
+		border-bottom: 1px solid #cacaca;
+	}
+
+	.ratel-btn-row {
+		margin-top: 40px;
+	}
+	
+	.ratel-action-row{
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		margin-top: 20rpx;
+		font-size: 20rpx;
+		color: #555555;
+	}
+
+	.ratel-button {
+		background-color: #57ade8;
+		border-radius:50rpx;
+		line-height: 2.3;
+	}
+
+
+	.login-type {
+		display: flex;
+		justify-content: center;
+	}
+
+	.login-type-btn {
+		line-height: 30px;
+		margin: 0px 15px;
+	}
+
+	.login-type-btn.act {
+		color: #0FAEFF;
+		border-bottom: solid 1px #0FAEFF;
+	}
+
+	.send-code-btn {
+		line-height: 24px;
+		font-size: 14px;
+		width: 95px;
+		text-align: center;
+		background-color: #0FAEFF;
+		border-radius: 20px;
+		color: #FFFFFF;
+	}
+
+	.action-row {
+		
+	}
+
+	.action-row navigator {
+		color: #007aff;
+		padding: 0 10px;
+	}
+
+	.oauth-row {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+	}
+
+	.oauth-image {
+		position: relative;
+		width: 50px;
+		height: 50px;
+		border: 1px solid #dddddd;
+		border-radius: 50px;
+		margin: 0 20px;
+		background-color: #ffffff;
+	}
+
+	.oauth-image image {
+		width: 30px;
+		height: 30px;
+		margin: 10px;
+	}
+
+	.oauth-image button {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 100%;
+		height: 100%;
+		opacity: 0;
+	}
+
+	.input-group {
+		background-color: initial;
+	}
+
+	.input-row.border::after {
+		background-color: #FFFFFF;
 	}
 </style>
